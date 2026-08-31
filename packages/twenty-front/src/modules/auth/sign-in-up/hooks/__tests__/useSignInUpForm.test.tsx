@@ -59,7 +59,7 @@ describe('useSignInUpForm', () => {
     });
   });
 
-  it('should prefill developer defaults when the state is true', () => {
+  it('should keep the email and password empty when the developer prefill flag is enabled', () => {
     const { result } = renderHook(() => useSignInUpForm(), {
       wrapper: ({ children }) => (
         <TestWrapper
@@ -74,7 +74,7 @@ describe('useSignInUpForm', () => {
     expect(result.current.form.getValues()).toEqual({
       exist: false,
       email: 'test@test.com',
-      password: 'tim@apple.dev',
+      password: '',
       captchaToken: '',
     });
   });

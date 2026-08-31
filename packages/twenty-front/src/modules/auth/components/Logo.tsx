@@ -59,7 +59,7 @@ export const Logo = ({
   to = AppPath.SignInUp,
 }: LogoProps) => {
   const { redirectToDefaultDomain } = useRedirectToDefaultDomain();
-  const defaultPrimaryLogoUrl = `${window.location.origin}/images/icons/android/android-launchericon-192-192.png`;
+  const defaultPrimaryLogoUrl = `${window.location.origin}/images/icons/v-logo.svg`;
 
   const primaryLogoUrl = getImageAbsoluteURI({
     imageUrl: primaryLogo ?? defaultPrimaryLogoUrl,
@@ -75,19 +75,13 @@ export const Logo = ({
 
   const isUsingDefaultLogo = !isDefined(primaryLogo);
 
+  if (isUsingDefaultLogo) {
+    return null;
+  }
+
   return (
     <StyledContainer onClick={() => onClick?.()}>
-      {isUsingDefaultLogo ? (
-        <UndecoratedLink to={to} onClick={() => redirectToDefaultDomain()}>
-          <StyledPrimaryLogo
-            style={{ backgroundImage: `url(${primaryLogoUrl})` }}
-          />
-        </UndecoratedLink>
-      ) : (
-        <StyledPrimaryLogo
-          style={{ backgroundImage: `url(${primaryLogoUrl})` }}
-        />
-      )}
+      <StyledPrimaryLogo style={{ backgroundImage: `url(${primaryLogoUrl})` }} />
       {isDefined(secondaryLogoUrl) ? (
         <StyledSecondaryLogoContainer>
           <StyledSecondaryLogo src={secondaryLogoUrl} />

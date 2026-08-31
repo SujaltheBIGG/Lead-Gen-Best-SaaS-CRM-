@@ -10,18 +10,21 @@ const StyledLogo = styled.img`
   @keyframes onboardingPulsingLogo {
     from {
       opacity: 1;
+      transform: scale(1);
     }
     to {
-      opacity: 0.4;
+      opacity: 0.55;
+      transform: scale(0.96);
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
     animation: none;
     opacity: 1;
+    transform: none;
   }
 `;
 
 export const OnboardingPulsingLogo = () => (
-  <StyledLogo src="/images/integrations/twenty-logo.svg" alt="" />
+  <StyledLogo src="/images/icons/v-logo.svg" alt="" />
 );
