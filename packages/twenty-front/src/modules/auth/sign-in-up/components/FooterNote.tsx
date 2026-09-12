@@ -72,30 +72,18 @@ export const FooterNote = ({
     return (
       <StyledCopyContainer>
         <Trans>By using Twenty, you agree to the</Trans>{' '}
-        <a
-          href="https://twenty.com/legal/terms"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <button type="button" disabled aria-disabled="true">
           <Trans>Terms of Service</Trans>
-        </a>{' '}
+        </button>{' '}
         <Trans>and</Trans>{' '}
         {secondaryAgreement === 'dataProcessingAgreement' ? (
-          <a
-            href="https://twenty.com/legal/dpa"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <button type="button" disabled aria-disabled="true">
             <Trans>Data Processing Agreement</Trans>
-          </a>
+          </button>
         ) : (
-          <a
-            href="https://twenty.com/legal/privacy"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <button type="button" disabled aria-disabled="true">
             <Trans>Privacy Policy</Trans>
-          </a>
+          </button>
         )}
         .
       </StyledCopyContainer>
@@ -112,21 +100,13 @@ export const FooterNote = ({
           <StyledSeparator>•</StyledSeparator>
         </>
       )}
-      <a
-        href="https://twenty.com/legal/privacy"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
+      <button type="button" disabled aria-disabled="true">
         <Trans>Privacy Policy</Trans>
-      </a>
+      </button>
       <StyledSeparator>•</StyledSeparator>
-      <a
-        href="https://twenty.com/legal/terms"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
+      <button type="button" disabled aria-disabled="true">
         <Trans>Terms of Service</Trans>
-      </a>
+      </button>
     </StyledLinksContainer>
   );
 };

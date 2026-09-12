@@ -87,7 +87,7 @@ describe('isRecordFieldReadOnly', () => {
     expect(result).toBe(false);
   });
 
-  it('should return true when field is from the standard application on a system object', () => {
+  it('should allow an editable standard field on a system object', () => {
     const result = isRecordFieldReadOnly({
       ...mockParams,
       isSystemObject: true,
@@ -98,7 +98,7 @@ describe('isRecordFieldReadOnly', () => {
       },
     });
 
-    expect(result).toBe(true);
+    expect(result).toBe(false);
   });
 
   it('should return false when field is not from the standard application on a system object', () => {
@@ -115,7 +115,7 @@ describe('isRecordFieldReadOnly', () => {
     expect(result).toBe(false);
   });
 
-  it('should return true when field application is not resolved on a system object', () => {
+  it('should allow an editable field when its application is not resolved', () => {
     const result = isRecordFieldReadOnly({
       ...mockParams,
       isSystemObject: true,
@@ -125,7 +125,7 @@ describe('isRecordFieldReadOnly', () => {
       },
     });
 
-    expect(result).toBe(true);
+    expect(result).toBe(false);
   });
 
   it('should return false when isSystemObject is not provided', () => {

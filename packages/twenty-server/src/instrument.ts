@@ -13,7 +13,6 @@ import {
 } from '@opentelemetry/sdk-metrics';
 import { isNonEmptyString } from '@sniptt/guards';
 import * as Sentry from '@sentry/node';
-import { nodeProfilingIntegration } from '@sentry/profiling-node';
 
 import { NodeEnvironment } from 'src/engine/core-modules/twenty-config/interfaces/node-environment.interface';
 
@@ -45,11 +44,23 @@ const parseSampleRate = ({
     : fallback;
 };
 
+const getNodeProfilingIntegration = () => {
+  try {
+    const { nodeProfilingIntegration } =
+      require('@sentry/profiling-node') as typeof import('@sentry/profiling-node');
+
+    return nodeProfilingIntegration();
+  } catch {
+    return null;
+  }
+};
+
 if (process.env.EXCEPTION_HANDLER_DRIVER === ExceptionHandlerDriver.SENTRY) {
   const tracesSampleRate = parseSampleRate({
     value: process.env.SENTRY_TRACES_SAMPLE_RATE,
     fallback: 0.1,
   });
+  const sentryNodeProfilingIntegration = getNodeProfilingIntegration();
 
   Sentry.init({
     environment: process.env.SENTRY_ENVIRONMENT,
@@ -82,7 +93,9 @@ if (process.env.EXCEPTION_HANDLER_DRIVER === ExceptionHandlerDriver.SENTRY) {
         recordInputs: true,
         recordOutputs: true,
       }),
-      nodeProfilingIntegration(),
+      ...(sentryNodeProfilingIntegration
+        ? [sentryNodeProfilingIntegration]
+        : []),
     ],
     tracesSampleRate,
     tracesSampler: ({ name, inheritOrSampleWith }) =>

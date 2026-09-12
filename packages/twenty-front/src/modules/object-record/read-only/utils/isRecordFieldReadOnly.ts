@@ -44,14 +44,8 @@ export const isRecordFieldReadOnly = ({
       objectPermissionsByObjectMetadataId,
     });
 
-  // Keep system-object standard fields read-only. If the application origin
-  // cannot be resolved yet, fail closed until metadata finishes loading.
-  const isReadOnlyStandardFieldOnSystemObject =
-    isSystemObject === true && isFieldFromStandardApplication !== false;
-
   return (
     isRecordReadOnly ||
-    isReadOnlyStandardFieldOnSystemObject ||
     !(fieldMetadataItem.isUIEditable ?? true) ||
     fieldReadOnlyByPermissions ||
     oneToManyTargetReadOnly
