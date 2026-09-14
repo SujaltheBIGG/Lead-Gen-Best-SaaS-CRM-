@@ -61,6 +61,7 @@ import { i18n } from '@lingui/core';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { SOURCE_LOCALE } from 'twenty-shared/translations';
 import { isDefined } from 'twenty-shared/utils';
+import { REACT_APP_LANDING_PAGE_URL } from '~/config';
 import { getWorkspaceUrl } from '~/utils/getWorkspaceUrl';
 import { isGraphqlErrorOfType } from '~/utils/is-graphql-error-of-type.util';
 import { useStore } from 'jotai';
@@ -130,7 +131,7 @@ export const useAuth = () => {
     store.set(currentUserWorkspaceState.atom, null);
     clearSessionLocalStorageKeys();
     setLastAuthenticateWorkspaceDomain(null);
-    window.location.assign(AppPath.SignInUp);
+    window.location.assign(REACT_APP_LANDING_PAGE_URL || AppPath.SignInUp);
   }, [store, setLastAuthenticateWorkspaceDomain]);
 
   const handleSetAuthTokens = useCallback(

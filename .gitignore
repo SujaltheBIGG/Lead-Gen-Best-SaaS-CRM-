@@ -71,3 +71,8 @@ screenshots/
 /.diag*.mjs
 /.compare*.mjs
 /.narrow*.mjs
+
+# Landing-page working files: screen recordings and editor backups stay local
+*.mov
+*.bak
+*.bak2
