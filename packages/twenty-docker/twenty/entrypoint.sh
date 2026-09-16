@@ -10,9 +10,12 @@ setup_and_migrate_db() {
     echo "Running database setup and migrations..."
 
     # Run setup and migration scripts
-    has_schema=$(psql -tAc "SELECT EXISTS (SELECT 1 FROM information_schema.schemata WHERE schema_name = 'core')" ${PG_DATABASE_URL})
-    if [ "$has_schema" = "f" ]; then
-        echo "Database appears to be empty, running migrations."
+    # setup-db creates the core schema before migrations create any table, so a
+    # container stopped midway leaves an empty schema behind. Checking a table
+    # migrations create means an interrupted first boot still self-heals.
+    has_core_tables=$(psql -tAc "SELECT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_schema = 'core' AND table_name = 'keyValuePair')" ${PG_DATABASE_URL})
+    if [ "$has_core_tables" != "t" ]; then
+        echo "Core tables are missing, initialising the database."
         yarn database:init:prod
     fi
 
