@@ -88,6 +88,19 @@ export default defineConfig(({ mode }) => {
     },
 
     plugins: [
+      {
+        // In production the server returns the landing page at "/"; mirror that in
+        // dev so one port serves the site and the app.
+        name: 'serve-landing-page-at-root',
+        configureServer(server) {
+          server.middlewares.use((req, _res, next) => {
+            if (req.url === '/' || req.url === '/index.html') {
+              req.url = '/landing/index.html';
+            }
+            next();
+          });
+        },
+      },
       react({
         plugins: [['@lingui/swc-plugin', {}]],
       }),
