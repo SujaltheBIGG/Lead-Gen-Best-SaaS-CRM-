@@ -1,7 +1,7 @@
 import { styled } from '@linaria/react';
 import { useLingui } from '@lingui/react/macro';
 import { type Editor } from '@tiptap/core';
-import { useEditorState } from '@tiptap/react';
+import { type EditorStateSnapshot, useEditorState } from '@tiptap/react';
 import {
   isDefined,
   resolveCanvasTheme,
@@ -73,8 +73,8 @@ const EmailBlockSettingsContent = ({ editor }: { editor: Editor }) => {
   const { i18n, t } = useLingui();
   const target = useEditorState({
     editor,
-    selector: ({ editor: currentEditor }) =>
-      getBlockSelectionTarget(currentEditor),
+    selector: ({ editor: currentEditor }: EditorStateSnapshot) =>
+      isDefined(currentEditor) ? getBlockSelectionTarget(currentEditor) : null,
   });
 
   if (!isDefined(target)) {

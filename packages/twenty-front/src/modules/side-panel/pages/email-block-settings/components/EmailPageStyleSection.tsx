@@ -1,7 +1,7 @@
 import { styled } from '@linaria/react';
 import { useLingui } from '@lingui/react/macro';
 import { type Editor } from '@tiptap/core';
-import { useEditorState } from '@tiptap/react';
+import { type EditorStateSnapshot, useEditorState } from '@tiptap/react';
 import {
   type CanvasTheme,
   isDefined,
@@ -90,8 +90,10 @@ export const EmailPageStyleSection = ({
 
   const canvasTheme = useEditorState({
     editor,
-    selector: ({ editor: currentEditor }) =>
-      resolveCanvasTheme(currentEditor.state.doc.attrs.canvasTheme),
+    selector: ({ editor: currentEditor }: EditorStateSnapshot) =>
+      isDefined(currentEditor)
+        ? resolveCanvasTheme(currentEditor.state.doc.attrs.canvasTheme)
+        : null,
   });
 
   if (!isDefined(canvasTheme)) {

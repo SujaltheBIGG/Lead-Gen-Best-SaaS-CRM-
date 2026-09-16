@@ -1,8 +1,12 @@
 import { AdvancedTextEditor } from '@/advanced-text-editor/components/AdvancedTextEditor';
 import { type AdvancedTextEditorComponentProps } from '@/advanced-text-editor/types/AdvancedTextEditorComponentProps';
 import { styled } from '@linaria/react';
-import { useEditorState } from '@tiptap/react';
-import { CANVAS_THEME_DEFAULTS, resolveCanvasTheme } from 'twenty-shared/utils';
+import { type EditorStateSnapshot, useEditorState } from '@tiptap/react';
+import {
+  CANVAS_THEME_DEFAULTS,
+  isDefined,
+  resolveCanvasTheme,
+} from 'twenty-shared/utils';
 import { themeCssVariables } from 'twenty-ui/theme-constants';
 
 const StyledCanvasBackdrop = styled.div`
@@ -39,8 +43,10 @@ export const EmailEditorCanvas = ({
 }: EmailEditorCanvasProps) => {
   const storedCanvasTheme = useEditorState({
     editor,
-    selector: ({ editor: currentEditor }) =>
-      resolveCanvasTheme(currentEditor.state.doc.attrs.canvasTheme),
+    selector: ({ editor: currentEditor }: EditorStateSnapshot) =>
+      isDefined(currentEditor)
+        ? resolveCanvasTheme(currentEditor.state.doc.attrs.canvasTheme)
+        : null,
   });
   const canvasTheme = storedCanvasTheme ?? CANVAS_THEME_DEFAULTS;
 

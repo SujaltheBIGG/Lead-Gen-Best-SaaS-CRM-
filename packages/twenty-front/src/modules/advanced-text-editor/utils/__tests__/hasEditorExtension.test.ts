@@ -23,4 +23,18 @@ describe('hasEditorExtension', () => {
     expect(hasEditorExtension(editor, 'italic')).toBe(false);
     expect(hasEditorExtension(editor, 'heading')).toBe(false);
   });
+
+  it('should return false while the editor is not yet available', () => {
+    expect(hasEditorExtension(null, 'heading')).toBe(false);
+    expect(hasEditorExtension(undefined, 'heading')).toBe(false);
+  });
+
+  it('should return false instead of throwing once the editor is destroyed', () => {
+    const destroyedEditor = new Editor({
+      extensions: [Document, Paragraph, Text, Bold],
+    });
+    destroyedEditor.destroy();
+
+    expect(hasEditorExtension(destroyedEditor, 'bold')).toBe(false);
+  });
 });

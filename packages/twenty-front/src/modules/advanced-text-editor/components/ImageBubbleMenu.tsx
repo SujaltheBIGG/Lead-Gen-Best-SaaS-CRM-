@@ -1,7 +1,7 @@
 import { BubbleMenuIconButton } from '@/advanced-text-editor/components/BubbleMenuIconButton';
 import { StyledBubbleMenuContainer } from '@/advanced-text-editor/components/StyledBubbleMenuContainer';
 import { type Editor } from '@tiptap/core';
-import { useEditorState } from '@tiptap/react';
+import { type EditorStateSnapshot, useEditorState } from '@tiptap/react';
 import { BubbleMenu } from '@tiptap/react/menus';
 import {
   IconAlignCenter,
@@ -9,6 +9,7 @@ import {
   IconAlignRight,
   IconTrash,
 } from 'twenty-ui/icon';
+import { isDefined } from 'twenty-shared/utils';
 
 type ImageBubbleMenuProps = {
   editor: Editor;
@@ -17,7 +18,11 @@ type ImageBubbleMenuProps = {
 export const ImageBubbleMenu = ({ editor }: ImageBubbleMenuProps) => {
   const state = useEditorState({
     editor,
-    selector: (ctx) => {
+    selector: (ctx: EditorStateSnapshot) => {
+      if (!isDefined(ctx.editor)) {
+        return { align: 'left' };
+      }
+
       return {
         align: ctx.editor.getAttributes('image').align || 'left',
       };

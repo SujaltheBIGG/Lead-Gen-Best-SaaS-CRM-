@@ -1,10 +1,24 @@
 import { type Editor } from '@tiptap/core';
-import { useEditorState } from '@tiptap/react';
+import { type EditorStateSnapshot, useEditorState } from '@tiptap/react';
+import { isDefined } from 'twenty-shared/utils';
 
 export const useTextBubbleState = (editor: Editor) => {
   const state = useEditorState({
     editor,
-    selector: (ctx) => {
+    selector: (ctx: EditorStateSnapshot) => {
+      if (!isDefined(ctx.editor)) {
+        return {
+          isBold: false,
+          isItalic: false,
+          isStrike: false,
+          isUnderline: false,
+          isLink: false,
+          linkHref: '',
+          isBulletList: false,
+          isOrderedList: false,
+        };
+      }
+
       return {
         isBold: ctx.editor.isActive('bold'),
         isItalic: ctx.editor.isActive('italic'),
