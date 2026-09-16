@@ -90,6 +90,19 @@ export class AppModule {
     const frontPath = join(__dirname, 'front');
 
     if (existsSync(frontPath)) {
+      const landingPath = join(frontPath, 'landing');
+
+      // Registered first so "/" serves the marketing page. renderPath limits its
+      // catch-all to "/" only, leaving every other route to the app below.
+      if (existsSync(landingPath)) {
+        modules.push(
+          ServeStaticModule.forRoot({
+            rootPath: landingPath,
+            renderPath: '/',
+          }),
+        );
+      }
+
       modules.push(
         ServeStaticModule.forRoot({
           rootPath: frontPath,
