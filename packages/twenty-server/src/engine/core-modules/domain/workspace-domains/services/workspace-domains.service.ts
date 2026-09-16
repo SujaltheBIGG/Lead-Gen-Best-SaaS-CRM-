@@ -240,7 +240,14 @@ export class WorkspaceDomainsService {
   private getTwentyWorkspaceUrl(subdomain: string) {
     const url = this.domainServerConfigService.getFrontUrl();
 
-    url.hostname = this.twentyConfigService.get('IS_MULTIWORKSPACE_ENABLED')
+    // Per-workspace subdomains need wildcard DNS. Where the host cannot serve
+    // them, workspaces share one hostname: the auth token carries the workspace
+    // id, so routing does not depend on the subdomain.
+    const usesSubdomainRouting =
+      this.twentyConfigService.get('IS_MULTIWORKSPACE_ENABLED') &&
+      process.env.IS_WORKSPACE_SUBDOMAIN_ROUTING_DISABLED !== 'true';
+
+    url.hostname = usesSubdomainRouting
       ? `${subdomain}.${url.hostname}`
       : url.hostname;
 
