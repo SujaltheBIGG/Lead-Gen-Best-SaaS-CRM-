@@ -283,6 +283,9 @@ export class ClientConfig {
   @Field(() => String, { nullable: true })
   defaultSubdomain: string;
 
+  @Field(() => Boolean)
+  isWorkspaceSubdomainRoutingDisabled: boolean;
+
   @Field(() => String)
   frontDomain: string;
 

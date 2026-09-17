@@ -77,6 +77,14 @@ export class OAuthPropagatorController {
       return true;
     }
 
+    // Without subdomain routing the frontend hostname serves every workspace.
+    if (
+      this.twentyConfigService.get('IS_WORKSPACE_SUBDOMAIN_ROUTING_DISABLED') &&
+      url.hostname === this.domainServerConfigService.getFrontUrl().hostname
+    ) {
+      return true;
+    }
+
     const workspace =
       await this.workspaceDomainsService.getWorkspaceByOriginOrDefaultWorkspace(
         url.href,

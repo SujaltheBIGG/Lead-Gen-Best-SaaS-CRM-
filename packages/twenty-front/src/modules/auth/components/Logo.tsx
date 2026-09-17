@@ -47,6 +47,7 @@ const StyledSecondaryLogoContainer = styled.div`
 
 const StyledPrimaryLogo = styled.div`
   background-size: cover;
+  border-radius: ${themeCssVariables.border.radius.md};
   height: 100%;
   width: 100%;
 `;
@@ -59,7 +60,7 @@ export const Logo = ({
   to = AppPath.SignInUp,
 }: LogoProps) => {
   const { redirectToDefaultDomain } = useRedirectToDefaultDomain();
-  const defaultPrimaryLogoUrl = `${window.location.origin}/images/icons/v-logo.svg`;
+  const defaultPrimaryLogoUrl = `${window.location.origin}/images/icons/vertex-logo.png`;
 
   const primaryLogoUrl = getImageAbsoluteURI({
     imageUrl: primaryLogo ?? defaultPrimaryLogoUrl,
@@ -73,15 +74,11 @@ export const Logo = ({
       })
     : null;
 
-  const isUsingDefaultLogo = !isDefined(primaryLogo);
-
-  if (isUsingDefaultLogo) {
-    return null;
-  }
-
   return (
     <StyledContainer onClick={() => onClick?.()}>
-      <StyledPrimaryLogo style={{ backgroundImage: `url(${primaryLogoUrl})` }} />
+      <StyledPrimaryLogo
+        style={{ backgroundImage: `url(${primaryLogoUrl})` }}
+      />
       {isDefined(secondaryLogoUrl) ? (
         <StyledSecondaryLogoContainer>
           <StyledSecondaryLogo src={secondaryLogoUrl} />

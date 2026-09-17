@@ -202,6 +202,8 @@ export const useClientConfig = (): UseClientConfigResult => {
       setOnboardingConfig(clientConfig?.onboarding ?? null);
       setDomainConfiguration({
         defaultSubdomain: clientConfig?.defaultSubdomain,
+        isWorkspaceSubdomainRoutingDisabled:
+          clientConfig?.isWorkspaceSubdomainRoutingDisabled,
         frontDomain: clientConfig?.frontDomain,
         publicFunctionDomain: clientConfig?.publicFunctionDomain,
       });

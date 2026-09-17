@@ -1109,6 +1109,15 @@ export class ConfigVariables {
   DEFAULT_SUBDOMAIN = 'app';
 
   @ConfigVariablesMetadata({
+    group: ConfigVariablesGroup.SERVER_CONFIG,
+    description:
+      'Keep every workspace on the frontend hostname instead of its own subdomain, for hosts without wildcard DNS',
+    type: ConfigVariableType.BOOLEAN,
+  })
+  @IsOptional()
+  IS_WORKSPACE_SUBDOMAIN_ROUTING_DISABLED = false;
+
+  @ConfigVariablesMetadata({
     group: ConfigVariablesGroup.ADVANCED_SETTINGS,
     description: 'Page ID for Cal.com booking integration',
     isHiddenInAdminPanel: true,

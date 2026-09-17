@@ -8,7 +8,13 @@ export const useReadDefaultDomainFromConfiguration = () => {
     isMultiWorkspaceEnabledState,
   );
 
-  const defaultDomain = isMultiWorkspaceEnabled
+  // Without subdomain routing every workspace shares the frontend hostname,
+  // so the sign-in page lives on that hostname rather than a default subdomain.
+  const usesDefaultSubdomain =
+    isMultiWorkspaceEnabled &&
+    domainConfiguration.isWorkspaceSubdomainRoutingDisabled !== true;
+
+  const defaultDomain = usesDefaultSubdomain
     ? `${domainConfiguration.defaultSubdomain}.${domainConfiguration.frontDomain}`
     : domainConfiguration.frontDomain;
 

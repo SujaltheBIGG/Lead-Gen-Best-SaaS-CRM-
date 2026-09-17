@@ -206,6 +206,9 @@ export class ClientConfigService {
         'IS_EMAIL_VERIFICATION_REQUIRED',
       ),
       defaultSubdomain: this.twentyConfigService.get('DEFAULT_SUBDOMAIN'),
+      isWorkspaceSubdomainRoutingDisabled: this.twentyConfigService.get(
+        'IS_WORKSPACE_SUBDOMAIN_ROUTING_DISABLED',
+      ),
       frontDomain: this.domainServerConfigService.getFrontUrl().hostname,
       publicFunctionDomain:
         this.domainServerConfigService.getPublicBaseHostnameOrUndefined() ??

@@ -7,6 +7,7 @@ import { isOnOnboardingTransitionPath } from '@/auth/utils/isOnOnboardingTransit
 import { clientConfigApiStatusState } from '@/client-config/states/clientConfigApiStatusState';
 import { isMultiWorkspaceEnabledState } from '@/client-config/states/isMultiWorkspaceEnabledState';
 import { useIsCurrentLocationOnDefaultDomain } from '@/domain-manager/hooks/useIsCurrentLocationOnDefaultDomain';
+import { domainConfigurationState } from '@/domain-manager/states/domainConfigurationState';
 import { OnboardingPageLoader } from '@/onboarding/components/OnboardingPageLoader';
 import { useAtomStateValue } from '@/ui/utilities/state/jotai/hooks/useAtomStateValue';
 import { UserOrMetadataLoader } from '~/loading/components/UserOrMetadataLoader';
@@ -17,6 +18,9 @@ export const DomainShell = () => {
     isMultiWorkspaceEnabledState,
   );
   const { isDefaultDomain } = useIsCurrentLocationOnDefaultDomain();
+  const { isWorkspaceSubdomainRoutingDisabled } = useAtomStateValue(
+    domainConfigurationState,
+  );
 
   if (!isLoadedOnce) {
     return (
@@ -32,7 +36,13 @@ export const DomainShell = () => {
     );
   }
 
-  if (!isMultiWorkspaceEnabled) {
+  // Without subdomain routing the default hostname also serves every
+  // workspace, so it needs the workspace app routes such as /verify; the root
+  // app would send them to its sign-in catch-all.
+  if (
+    !isMultiWorkspaceEnabled ||
+    isWorkspaceSubdomainRoutingDisabled === true
+  ) {
     return <WorkspaceApp />;
   }
 

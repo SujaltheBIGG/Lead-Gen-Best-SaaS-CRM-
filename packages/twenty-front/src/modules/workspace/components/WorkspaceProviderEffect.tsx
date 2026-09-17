@@ -15,6 +15,11 @@ import { getWorkspaceUrl } from '~/utils/getWorkspaceUrl';
 const getCurrentSearchParams = (): Record<string, string> =>
   Object.fromEntries(new URLSearchParams(window.location.search));
 
+// A workspace already served from this hostname needs no redirect: redirecting
+// to it only reloads the page, and the reload runs this effect again.
+const isCurrentHostname = (url: string) =>
+  new URL(url).hostname === window.location.hostname;
+
 export const WorkspaceProviderEffect = () => {
   const { data: getPublicWorkspaceData } = useGetPublicWorkspaceDataByDomain();
 
@@ -47,7 +52,8 @@ export const WorkspaceProviderEffect = () => {
       isDefined(getPublicWorkspaceData) &&
       !isWorkspaceHostnameMatchCurrentLocationHostname(
         getPublicWorkspaceData.workspaceUrls,
-      )
+      ) &&
+      !isCurrentHostname(getWorkspaceUrl(getPublicWorkspaceData.workspaceUrls))
     ) {
       redirectToWorkspaceDomain(
         getWorkspaceUrl(getPublicWorkspaceData.workspaceUrls),
@@ -69,7 +75,8 @@ export const WorkspaceProviderEffect = () => {
       isDefaultDomain &&
       isDefined(lastAuthenticatedWorkspaceDomain) &&
       'workspaceUrl' in lastAuthenticatedWorkspaceDomain &&
-      isDefined(lastAuthenticatedWorkspaceDomain?.workspaceUrl)
+      isDefined(lastAuthenticatedWorkspaceDomain?.workspaceUrl) &&
+      !isCurrentHostname(lastAuthenticatedWorkspaceDomain.workspaceUrl)
     ) {
       initializeQueryParamState();
       redirectToWorkspaceDomain(

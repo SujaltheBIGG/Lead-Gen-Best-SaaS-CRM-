@@ -100,6 +100,27 @@ export class WorkspaceDomainsService {
     return workspace;
   }
 
+  async getWorkspaceByOriginOrTokenWorkspaceId(
+    origin: string,
+    tokenWorkspaceId: string,
+  ) {
+    // Without subdomain routing every workspace shares one hostname, so the
+    // origin cannot name a workspace; the server-signed token already does.
+    if (
+      this.twentyConfigService.get('IS_MULTIWORKSPACE_ENABLED') &&
+      this.twentyConfigService.get('IS_WORKSPACE_SUBDOMAIN_ROUTING_DISABLED')
+    ) {
+      return (
+        (await this.workspaceRepository.findOne({
+          where: { id: tokenWorkspaceId },
+          relations: ['workspaceSSOIdentityProviders'],
+        })) ?? undefined
+      );
+    }
+
+    return this.getWorkspaceByOriginOrDefaultWorkspace(origin);
+  }
+
   async resolveWorkspaceAndPublicDomain(origin: string): Promise<{
     workspace: WorkspaceEntity | undefined;
     publicDomain: PublicDomainEntity | null;
@@ -245,7 +266,7 @@ export class WorkspaceDomainsService {
     // id, so routing does not depend on the subdomain.
     const usesSubdomainRouting =
       this.twentyConfigService.get('IS_MULTIWORKSPACE_ENABLED') &&
-      process.env.IS_WORKSPACE_SUBDOMAIN_ROUTING_DISABLED !== 'true';
+      !this.twentyConfigService.get('IS_WORKSPACE_SUBDOMAIN_ROUTING_DISABLED');
 
     url.hostname = usesSubdomainRouting
       ? `${subdomain}.${url.hostname}`

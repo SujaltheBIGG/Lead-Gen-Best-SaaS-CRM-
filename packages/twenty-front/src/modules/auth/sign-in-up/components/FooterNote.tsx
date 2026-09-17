@@ -71,7 +71,7 @@ export const FooterNote = ({
   if (!isOnAWorkspace) {
     return (
       <StyledCopyContainer>
-        <Trans>By using Twenty, you agree to the</Trans>{' '}
+        <Trans>By using Vertex, you agree to the</Trans>{' '}
         <button type="button" disabled aria-disabled="true">
           <Trans>Terms of Service</Trans>
         </button>{' '}

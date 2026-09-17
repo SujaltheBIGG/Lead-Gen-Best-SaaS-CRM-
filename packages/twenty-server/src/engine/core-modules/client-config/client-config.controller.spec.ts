@@ -68,6 +68,7 @@ describe('ClientConfigController', () => {
         isMultiWorkspaceEnabled: true,
         isEmailVerificationRequired: false,
         defaultSubdomain: 'app',
+        isWorkspaceSubdomainRoutingDisabled: false,
         frontDomain: 'localhost',
         publicFunctionDomain: null,
         support: {

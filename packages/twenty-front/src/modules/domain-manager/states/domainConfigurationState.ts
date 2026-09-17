@@ -4,13 +4,17 @@ import { createAtomState } from '@/ui/utilities/state/jotai/utils/createAtomStat
 export const domainConfigurationState = createAtomState<
   Pick<
     ClientConfig,
-    'frontDomain' | 'defaultSubdomain' | 'publicFunctionDomain'
+    | 'frontDomain'
+    | 'defaultSubdomain'
+    | 'isWorkspaceSubdomainRoutingDisabled'
+    | 'publicFunctionDomain'
   >
 >({
   key: 'domainConfiguration',
   defaultValue: {
     frontDomain: '',
     defaultSubdomain: undefined,
+    isWorkspaceSubdomainRoutingDisabled: false,
     publicFunctionDomain: undefined,
   },
 });

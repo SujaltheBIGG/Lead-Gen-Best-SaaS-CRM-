@@ -1,3 +1,4 @@
+import { currentWorkspaceState } from '@/auth/states/currentWorkspaceState';
 import { isMultiWorkspaceEnabledState } from '@/client-config/states/isMultiWorkspaceEnabledState';
 import { useReadDefaultDomainFromConfiguration } from '@/domain-manager/hooks/useReadDefaultDomainFromConfiguration';
 import { domainConfigurationState } from '@/domain-manager/states/domainConfigurationState';
@@ -11,6 +12,7 @@ export const useIsCurrentLocationOnAWorkspace = () => {
     isMultiWorkspaceEnabledState,
   );
   const domainConfiguration = useAtomStateValue(domainConfigurationState);
+  const currentWorkspace = useAtomStateValue(currentWorkspaceState);
 
   if (
     isMultiWorkspaceEnabled &&
@@ -20,9 +22,13 @@ export const useIsCurrentLocationOnAWorkspace = () => {
     throw new Error('frontDomain and defaultSubdomain are required');
   }
 
+  // Without subdomain routing every workspace shares the default hostname, so
+  // being on a workspace means the session has one rather than a hostname match.
   const isOnAWorkspace = !isMultiWorkspaceEnabled
     ? true
-    : window.location.hostname !== defaultDomain;
+    : domainConfiguration.isWorkspaceSubdomainRoutingDisabled === true
+      ? isDefined(currentWorkspace)
+      : window.location.hostname !== defaultDomain;
 
   return {
     isOnAWorkspace,
