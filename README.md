@@ -61,10 +61,3 @@ own schema on first boot.
 npx nx lint twenty-front && npx nx lint twenty-server
 npx jest <path> --config=packages/<package>/jest.config.mjs
 ```
-
-## License and credits
-
-Vertex is built on [Twenty](https://github.com/twentyhq/twenty), the open-source CRM, and is
-distributed under the **GNU AGPL v3** — see [LICENSE](./LICENSE). Files marked
-`/* @license Enterprise */` carry the commercial terms described in that file. The license
-and its notices must stay with any copy or modified version of this code.
